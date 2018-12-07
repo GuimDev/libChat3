@@ -417,48 +417,48 @@ local function libChatGroupTypeChangedReceiver(largeGroup)
 	
 end
 
-local function registerFunction(addonFunc, funcToUse, position, index, ...)
+local function registerFunction(callback, funcToUse, position, index, ...)
 
 	if funcToUse == "registerName" then
-		funcName = addonFunc
+		funcName = callback
 	elseif funcToUse == "registerText" then
-		funcText = addonFunc
+		funcText = callback
 	elseif funcToUse == "registerFormat" then
-		funcFormat = addonFunc
+		funcFormat = callback
 	elseif funcToUse == "registerAppend" then
 		if position == "BeforeAll" and index == "DDS" then
-			funcDDSBeforeAll = addonFunc
+			funcDDSBeforeAll = callback
 		elseif position == "BeforeAll" and index == "Text" then
-			funcTextBeforeAll = addonFunc
+			funcTextBeforeAll = callback
 		elseif position == "BeforeSender" and index == "DDS" then
-			funcDDSBeforeSender = addonFunc
+			funcDDSBeforeSender = callback
 		elseif position == "BeforeSender" and index == "Text" then
-			funcTextBeforeSender = addonFunc
+			funcTextBeforeSender = callback
 		elseif position == "AfterSender" and index == "DDS" then
-			funcDDSAfterSender = addonFunc
+			funcDDSAfterSender = callback
 		elseif position == "AfterSender" and index == "Text" then
-			funcTextAfterSender = addonFunc
+			funcTextAfterSender = callback
 		elseif position == "BeforeText" and index == "DDS" then
-			funcDDSBeforeText = addonFunc
+			funcDDSBeforeText = callback
 		elseif position == "BeforeText" and index == "Text" then
-			funcTextBeforeText = addonFunc
+			funcTextBeforeText = callback
 		elseif position == "AfterText" and index == "Text" then
-			funcTextAfterText = addonFunc
+			funcTextAfterText = callback
 		elseif position == "AfterText" and index == "DDS" then
-			funcDDSAfterText = addonFunc
+			funcDDSAfterText = callback
 		end
 		funcToUse = "registerAppend" .. index .. position
 	-- old
 	elseif funcToUse == "registerFriendStatus" then
-		funcFriendStatus = addonFunc
+		funcFriendStatus = callback
 	elseif funcToUse == "registerIgnoreAdd" then
-		funcIgnoreAdd = addonFunc
+		funcIgnoreAdd = callback
 	elseif funcToUse == "registerIgnoreRemove" then
-		funcIgnoreRemove = addonFunc
+		funcIgnoreRemove = callback
 	elseif funcToUse == "registerGroupMemberLeft" then
-		funcGroupMemberLeft = addonFunc
+		funcGroupMemberLeft = callback
 	elseif funcToUse == "registerGroupTypeChanged" then
-		funcGroupTypeChanged = addonFunc
+		funcGroupTypeChanged = callback
 	end
 	
 	if not libchat.manager[funcToUse] then
