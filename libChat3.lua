@@ -152,18 +152,15 @@ end
 
 -- Listens for EVENT_CHAT_MESSAGE_CHANNEL event from ZO_ChatSystem
 function libchat:MessageChannelReceiver(channelID, from, text, isCustomerService, fromDisplayName)
-	
+	local output = {
+		BeforeAll = { DDS = "", Text = "" },
+		BeforeSender = { DDS = "", Text = "" },
+		AfterSender = { DDS = "", Text = "" },
+		BeforeText = { DDS = "", Text = "" },
+		AfterText = { DDS = "", Text = "" }
+	}
+
 	local message
-	local DDSBeforeAll = ""
-	local TextBeforeAll = ""
-	local DDSBeforeSender = ""
-	local TextBeforeSender = ""
-	local DDSAfterSender = ""
-	local TextAfterSender = ""
-	local DDSBeforeText = ""
-	local TextBeforeText = ""
-	local TextAfterText = ""
-	local DDSAfterText = ""
 	local originalFrom = from
 	local originalText = text
 	
@@ -177,52 +174,52 @@ function libchat:MessageChannelReceiver(channelID, from, text, isCustomerService
 	
 	-- Function to append
 	if storage.BeforeAll.DDS then
-		DDSBeforeAll = storage.BeforeAll.DDS(channelID, from, text, isCustomerService, fromDisplayName)
+		output.BeforeAll.DDS = storage.BeforeAll.DDS(channelID, from, text, isCustomerService, fromDisplayName)
 	end
 	
 	-- Function to append
 	if storage.BeforeAll.Text then
-		TextBeforeAll = storage.BeforeAll.Text(channelID, from, text, isCustomerService, fromDisplayName)
+		output.BeforeAll.Text = storage.BeforeAll.Text(channelID, from, text, isCustomerService, fromDisplayName)
 	end
 	
 	-- Function to append
 	if storage.BeforeSender.DDS then
-		DDSBeforeSender = storage.BeforeSender.DDS(channelID, from, text, isCustomerService, fromDisplayName)
+		output.BeforeSender.DDS = storage.BeforeSender.DDS(channelID, from, text, isCustomerService, fromDisplayName)
 	end
 	
 	-- Function to append
 	if storage.BeforeSender.Text then
-		TextBeforeSender = storage.BeforeSender.Text(channelID, from, text, isCustomerService, fromDisplayName)
+		output.BeforeSender.Text = storage.BeforeSender.Text(channelID, from, text, isCustomerService, fromDisplayName)
 	end
 	
 	-- Function to append
 	if storage.AfterSender.DDS then
-		DDSAfterSender = storage.AfterSender.DDS(channelID, from, text, isCustomerService, fromDisplayName)
+		output.AfterSender.DDS = storage.AfterSender.DDS(channelID, from, text, isCustomerService, fromDisplayName)
 	end
 	
 	-- Function to append
 	if storage.AfterSender.Text then
-		TextAfterSender = storage.AfterSender.Text(channelID, from, text, isCustomerService, fromDisplayName)
+		output.AfterSender.Text = storage.AfterSender.Text(channelID, from, text, isCustomerService, fromDisplayName)
 	end
 	
 	-- Function to append
 	if storage.BeforeText.DDS then
-		DDSBeforeText = storage.BeforeText.DDS(channelID, from, text, isCustomerService, fromDisplayName)
+		output.BeforeText.DDS = storage.BeforeText.DDS(channelID, from, text, isCustomerService, fromDisplayName)
 	end
 	
 	-- Function to append
 	if storage.BeforeText.Text then
-		TextBeforeText = storage.BeforeText.Text(channelID, from, text, isCustomerService, fromDisplayName)
+		output.BeforeText.Text = storage.BeforeText.Text(channelID, from, text, isCustomerService, fromDisplayName)
 	end
 	
 	-- Function to append
 	if storage.AfterText.Text then
-		TextAfterText = storage.AfterText.Text(channelID, from, text, isCustomerService, fromDisplayName)
+		output.AfterText.Text = storage.AfterText.Text(channelID, from, text, isCustomerService, fromDisplayName)
 	end
 	
 	-- Function to append
 	if storage.AfterText.DDS then
-		DDSAfterText = storage.AfterText.DDS(channelID, from, text, isCustomerService, fromDisplayName)
+		output.AfterText.DDS = storage.AfterText.DDS(channelID, from, text, isCustomerService, fromDisplayName)
 	end
 
 	-- Function to affect From
@@ -239,7 +236,7 @@ function libchat:MessageChannelReceiver(channelID, from, text, isCustomerService
 	
 	-- Function to format message
 	if funcFormat then
-		message = funcFormat(channelID, from, text, isCustomerService, fromDisplayName, originalFrom, originalText, DDSBeforeAll, TextBeforeAll, DDSBeforeSender, TextBeforeSender, TextAfterSender, DDSAfterSender, DDSBeforeText, TextBeforeText, TextAfterText, DDSAfterText)
+		message = funcFormat(channelID, from, text, isCustomerService, fromDisplayName, originalFrom, originalText, output.BeforeAll.DDS, output.BeforeAll.Text, output.BeforeSender.DDS, output.BeforeSender.Text, output.AfterSender.Text, output.AfterSender.DDS, output.BeforeText.DDS, output.BeforeText.Text, output.AfterText.Text, output.AfterText.DDS)
 		if not message then return end
 	else
 	
@@ -255,18 +252,18 @@ function libchat:MessageChannelReceiver(channelID, from, text, isCustomerService
 		-- Create player link
 		local playerLink
 		if info.playerLinkable and not from:find("%[") then
-			playerLink = DDSBeforeSender .. TextBeforeSender .. ZO_LinkHandler_CreatePlayerLink((from)) .. TextAfterSender .. DDSAfterSender
+			playerLink = output.BeforeSender.DDS .. output.BeforeSender.Text .. ZO_LinkHandler_CreatePlayerLink((from)) .. output.AfterSender.Text .. output.AfterSender.DDS
 		else
-			playerLink = DDSBeforeSender .. TextBeforeSender .. from .. TextAfterSender .. DDSAfterSender
+			playerLink = output.BeforeSender.DDS .. output.BeforeSender.Text .. from .. output.AfterSender.Text .. output.AfterSender.DDS
 		end
 		
-		text = DDSBeforeText .. TextBeforeText .. text .. TextAfterText .. DDSAfterText
+		text = output.BeforeText.DDS .. output.BeforeText.Text .. text .. output.AfterText.Text .. output.AfterText.DDS
 		
 		-- Create default formatting
 		if channelLink then
-			message = DDSBeforeAll .. TextBeforeAll .. zo_strformat(info.format, channelLink, playerLink, text)
+			message = output.BeforeAll.DDS .. output.BeforeAll.Text .. zo_strformat(info.format, channelLink, playerLink, text)
 		else
-			message = DDSBeforeAll .. TextBeforeAll .. zo_strformat(info.format, playerLink, text, showCustomerService(isCustomerService))
+			message = output.BeforeAll.DDS .. output.BeforeAll.Text .. zo_strformat(info.format, playerLink, text, showCustomerService(isCustomerService))
 		end
 	end
 	
