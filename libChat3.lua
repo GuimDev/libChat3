@@ -33,9 +33,26 @@ path/libChat2/libChat2.lua
 
 LibChat2 require LibStub to work
 
-Author: Ayantir
-Filename: libChat2.lua
-Version: 9
+Last Author: Ayantir --> Version: 9 and inferior
+
+-----
+
+Filename: libChat3.lua
+Version: 10
+Author: Provision
+
+Mini :
+|                           message                         |
+|   {___1___} | {Sender} | {___2___} | {Text} | {___3___}   |
+| BfAll |      playerLink      |        text        | ..... |
+
+Full :
+|            |                    ___1___                    | {Sender} |                    ___2___                    | {Text} |                    ___3___                    |
+| Position : |   BeforeAll   | {OptEsoFormat} | BeforeSender |          |  AfterSender  | {OptEsoFormat} |  BeforeText  |        |   AfterText   | {OptEsoFormat} | ............ |
+| Index :    | DDS_  | Text_ |                | DDS_ | Text_ |          | Text_ | DDS_  |                | DDS_ | Text_ |        | Text_ | DDS_  |                | ............ |
+| Variable : |  channelLink  |                |               playerLink                |                |                 text                  |                | ............ |
+
+ *{OptEsoFormat} = {OptionnalESOUIFormat}
 
 -----
 
@@ -66,7 +83,23 @@ Minor = 7 : LibChat2 1.6
 Minor = 8 : LibChat2 8
 Minor = 9 : LibChat2 9
 
-More info : http://www.esoui.com/downloads/info740-libChat2.html
+Minor = 10 : LibChat3 10 <-- Provision Update
+
+Several addons on one event (without conflict) :
+ - registerName
+ - registerText
+ - registerAppendDDSBeforeAll
+ - registerAppendTextBeforeAll
+ - registerAppendDDSBeforeSender
+ - registerAppendTextBeforeSender
+ - registerAppendDDSAfterSender
+ - registerAppendTextAfterSender
+ - registerAppendDDSBeforeText
+ - registerAppendTextBeforeText
+ - registerAppendDDSAfterText
+ - registerAppendTextAfterText
+
+More info : http://www.esoui.com/downloads/__________.html
 
 ]]--
 
