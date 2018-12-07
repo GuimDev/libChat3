@@ -85,7 +85,7 @@ Minor = 9 : LibChat2 9
 
 Minor = 10 : LibChat3 10 <-- Provision Update
 
-Several addons on one event (without conflict) :
+Allow several addon listeners on one event (without conflict) :
  - registerName
  - registerText
  - registerAppendDDSBeforeAll
