@@ -149,7 +149,7 @@ local function showCustomerService(isCustomerService)
 end
 
 -- Listens for EVENT_CHAT_MESSAGE_CHANNEL event from ZO_ChatSystem
-local function libChatMessageChannelReceiver(channelID, from, text, isCustomerService, fromDisplayName)
+function libchat:MessageChannelReceiver(channelID, from, text, isCustomerService, fromDisplayName)
 	
 	local message
 	local DDSBeforeAll = ""
@@ -590,7 +590,7 @@ end
 SLASH_COMMANDS["/libchat"] = libchatdebug
 
 -- AddEventHandler to ZO_ChatSystem with same name than the original one cause the Event triggers library instead of ESOUI
-ZO_ChatSystem_AddEventHandler(EVENT_CHAT_MESSAGE_CHANNEL, libChatMessageChannelReceiver)
+ZO_ChatSystem_AddEventHandler(EVENT_CHAT_MESSAGE_CHANNEL, function(...) return libchat:MessageChannelReceiver(...) end)
 ZO_ChatSystem_AddEventHandler(EVENT_FRIEND_PLAYER_STATUS_CHANGED, libChatFriendPlayerStatusChangedReceiver)
 ZO_ChatSystem_AddEventHandler(EVENT_IGNORE_ADDED, libChatIgnoreAddedReceiver)
 ZO_ChatSystem_AddEventHandler(EVENT_IGNORE_REMOVED, libChatIgnoreRemovedReceiver)
