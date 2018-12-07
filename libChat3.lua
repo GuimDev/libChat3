@@ -223,20 +223,20 @@ function libchat:MessageChannelReceiver(channelID, from, text, isCustomerService
 	end
 
 	-- Function to affect From
-	if funcName then
-		from = funcName(channelID, from, isCustomerService, fromDisplayName)
+	if storage.parser.Name then
+		from = storage.parser.Name(channelID, from, isCustomerService, fromDisplayName)
 		if not from then return	end
 	end
 	
 	-- Function to format text
-	if funcText then
-		text = funcText(channelID, from, text, isCustomerService, fromDisplayName)
+	if storage.parser.Text then
+		text = storage.parser.Text(channelID, from, text, isCustomerService, fromDisplayName)
 		if not text then return end
 	end
 	
 	-- Function to format message
-	if funcFormat then
-		message = funcFormat(channelID, from, text, isCustomerService, fromDisplayName, originalFrom, originalText, output.BeforeAll.DDS, output.BeforeAll.Text, output.BeforeSender.DDS, output.BeforeSender.Text, output.AfterSender.Text, output.AfterSender.DDS, output.BeforeText.DDS, output.BeforeText.Text, output.AfterText.Text, output.AfterText.DDS)
+	if storage.parser.Format then
+		message = storage.parser.Format(channelID, from, text, isCustomerService, fromDisplayName, originalFrom, originalText, output.BeforeAll.DDS, output.BeforeAll.Text, output.BeforeSender.DDS, output.BeforeSender.Text, output.AfterSender.Text, output.AfterSender.DDS, output.BeforeText.DDS, output.BeforeText.Text, output.AfterText.Text, output.AfterText.DDS)
 		if not message then return end
 	else
 	
@@ -419,11 +419,11 @@ end
 local function registerFunction(callback, funcToUse, position, index, ...)
 
 	if funcToUse == "registerName" then
-		funcName = callback
+		storage.parser.Name = callback
 	elseif funcToUse == "registerText" then
-		funcText = callback
+		storage.parser.Text = callback
 	elseif funcToUse == "registerFormat" then
-		funcFormat = callback
+		storage.parser.Format = callback
 	elseif funcToUse == "registerAppend" then
 		storage[position][index] = callback
 		funcToUse = "registerAppend" .. index .. position
