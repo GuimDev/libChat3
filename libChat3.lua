@@ -99,6 +99,8 @@ Several addons on one event (without conflict) :
  - registerAppendDDSAfterText
  - registerAppendTextAfterText
 
+Old version : http://www.esoui.com/downloads/info740-libChat2.html
+
 More info : http://www.esoui.com/downloads/__________.html
 
 ]]--
