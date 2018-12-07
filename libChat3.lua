@@ -173,23 +173,28 @@ function libchat:MessageChannelReceiver(channelID, from, text, isCustomerService
 	end
 
 	for _, position in ipairs(PositionList) do
-		for _, func in ipairs(IndexList) do
+		for _, index in ipairs(IndexList) do
 			-- Function to append
-			output[position][index] = func(channelID, from, text, isCustomerService, fromDisplayName)
+			local callbacks = storage[position][index]
+
+			for _, func in ipairs(callbacks) do
+				local str = func(channelID, from, text, isCustomerService, fromDisplayName)
+				output[position][index] = output[position][index] .. str
+			end
 		end
 	end
 
 	-- Function to affect From
-	if storage.parser.Name then
-		from = storage.parser.Name(channelID, from, isCustomerService, fromDisplayName)
-		if not from then return	end
+	for _, func in ipairs(storage.parser.Name) do
+		from = func(channelID, from, isCustomerService, fromDisplayName)
 	end
-	
+	if not from then return end
+
 	-- Function to format text
-	if storage.parser.Text then
-		text = storage.parser.Text(channelID, from, text, isCustomerService, fromDisplayName)
-		if not text then return end
+	for _, func in ipairs(storage.parser.Text) do
+		text = func(channelID, from, text, isCustomerService, fromDisplayName)
 	end
+	if not text then return end
 	
 	-- Function to format message
 	if storage.parser.Format then
@@ -376,13 +381,13 @@ end
 local function registerFunction(callback, funcToUse, position, index, ...)
 
 	if funcToUse == "registerName" then
-		storage.parser.Name = callback
+		table.insert(storage.parser.Name, callback)
 	elseif funcToUse == "registerText" then
-		storage.parser.Text = callback
+		table.insert(storage.parser.Text, callback)
 	elseif funcToUse == "registerFormat" then
 		storage.parser.Format = callback
 	elseif funcToUse == "registerAppend" then
-		storage[position][index] = callback
+		table.insert(storage[position][index], callback)
 		funcToUse = "registerAppend" .. index .. position
 	-- old
 	elseif funcToUse == "registerFriendStatus" then
