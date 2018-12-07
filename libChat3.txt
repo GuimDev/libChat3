@@ -1,0 +1,10 @@
+## Title: libChat3 (|c00C000Provision|r's update)
+## Description: libChat3 allows you to have several addons for the chat
+## Author: Ayantir, |c00C000Provision|r
+## DependsOn: LibStub
+## APIVersion: 100025, 100026
+## Version: 10
+
+lib/LibStub.lua
+
+libChat3.lua
