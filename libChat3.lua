@@ -111,6 +111,10 @@ if not libchat then
 end
 
 -- local declaration
+local PositionList = { "BeforeAll", "BeforeSender", "AfterSender", "BeforeText", "AfterText" }
+local IndexList = { "DDS", "Text" }
+local functionNameTemplate = "%s%s%s"
+
 local funcName
 local funcText
 local funcFormat
