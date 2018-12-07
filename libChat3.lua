@@ -428,27 +428,7 @@ local function registerFunction(callback, funcToUse, position, index, ...)
 	elseif funcToUse == "registerFormat" then
 		funcFormat = callback
 	elseif funcToUse == "registerAppend" then
-		if position == "BeforeAll" and index == "DDS" then
-			storage.BeforeAll.DDS = callback
-		elseif position == "BeforeAll" and index == "Text" then
-			storage.BeforeAll.Text = callback
-		elseif position == "BeforeSender" and index == "DDS" then
-			storage.BeforeSender.DDS = callback
-		elseif position == "BeforeSender" and index == "Text" then
-			storage.BeforeSender.Text = callback
-		elseif position == "AfterSender" and index == "DDS" then
-			storage.AfterSender.DDS = callback
-		elseif position == "AfterSender" and index == "Text" then
-			storage.AfterSender.Text = callback
-		elseif position == "BeforeText" and index == "DDS" then
-			storage.BeforeText.DDS = callback
-		elseif position == "BeforeText" and index == "Text" then
-			storage.BeforeText.Text = callback
-		elseif position == "AfterText" and index == "Text" then
-			storage.AfterText.Text = callback
-		elseif position == "AfterText" and index == "DDS" then
-			storage.AfterText.DDS = callback
-		end
+		storage[position][index] = callback
 		funcToUse = "registerAppend" .. index .. position
 	-- old
 	elseif funcToUse == "registerFriendStatus" then
