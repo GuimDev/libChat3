@@ -417,7 +417,7 @@ local function libChatGroupTypeChangedReceiver(largeGroup)
 	
 end
 
-local function registerFunction(addonFunc, funcToUse, ...)
+local function registerFunction(addonFunc, funcToUse, position, index, ...)
 
 	if funcToUse == "registerName" then
 		funcName = addonFunc
@@ -435,26 +435,29 @@ local function registerFunction(addonFunc, funcToUse, ...)
 		funcGroupMemberLeft = addonFunc
 	elseif funcToUse == "registerGroupTypeChanged" then
 		funcGroupTypeChanged = addonFunc
-	elseif funcToUse == "registerAppendDDSBeforeAll" then
-		funcDDSBeforeAll = addonFunc
-	elseif funcToUse == "registerAppendTextBeforeAll" then
-		funcTextBeforeAll = addonFunc
-	elseif funcToUse == "registerAppendDDSBeforeSender" then
-		funcDDSBeforeSender = addonFunc
-	elseif funcToUse == "registerAppendTextBeforeSender" then
-		funcTextBeforeSender = addonFunc
-	elseif funcToUse == "registerAppendDDSAfterSender" then
-		funcDDSAfterSender = addonFunc
-	elseif funcToUse == "registerAppendTextAfterSender" then
-		funcTextAfterSender = addonFunc
-	elseif funcToUse == "registerAppendDDSBeforeText" then
-		funcDDSBeforeText = addonFunc
-	elseif funcToUse == "registerAppendTextBeforeText" then
-		funcTextBeforeText = addonFunc
-	elseif funcToUse == "registerAppendTextAfterText" then
-		funcTextAfterText = addonFunc
-	elseif funcToUse == "registerAppendDDSAfterText" then
-		funcDDSAfterText = addonFunc
+	elseif funcToUse == "registerAppend" then
+		if position == "BeforeAll" and index == "DDS" then
+			funcDDSBeforeAll = addonFunc
+		elseif position == "BeforeAll" and index == "Text" then
+			funcTextBeforeAll = addonFunc
+		elseif position == "BeforeSender" and index == "DDS" then
+			funcDDSBeforeSender = addonFunc
+		elseif position == "BeforeSender" and index == "Text" then
+			funcTextBeforeSender = addonFunc
+		elseif position == "AfterSender" and index == "DDS" then
+			funcDDSAfterSender = addonFunc
+		elseif position == "AfterSender" and index == "Text" then
+			funcTextAfterSender = addonFunc
+		elseif position == "BeforeText" and index == "DDS" then
+			funcDDSBeforeText = addonFunc
+		elseif position == "BeforeText" and index == "Text" then
+			funcTextBeforeText = addonFunc
+		elseif position == "AfterText" and index == "Text" then
+			funcTextAfterText = addonFunc
+		elseif position == "AfterText" and index == "DDS" then
+			funcDDSAfterText = addonFunc
+		end
+		funcToUse = "registerAppend" .. index .. position
 	end
 	
 	if not libchat.manager[funcToUse] then
@@ -479,92 +482,92 @@ end
 
 -- Register a function to be called to modify MessageChannel Sender Name
 function libchat:registerName(func, ...)
-	registerFunction(func, "registerName", ...)
+	registerFunction(func, "registerName", nil, nil, ...)
 end
 
 -- Register a function to be called to modify MessageChannel Text
 function libchat:registerText(func, ...)
-	registerFunction(func, "registerText", ...)
+	registerFunction(func, "registerText", nil, nil, ...)
 end
 
 -- Register a function to be called to format MessageChannel whole Message
 function libchat:registerFormat(func, ...)
-	registerFunction(func, "registerFormat", ...)
+	registerFunction(func, "registerFormat", nil, nil, ...)
 end
 
 -- Register a function to be called to format FriendStatus Message
 function libchat:registerFriendStatus(func, ...)
-	registerFunction(func, "registerFriendStatus", ...)
+	registerFunction(func, "registerFriendStatus", nil, nil, ...)
 end
 
 -- Register a function to be called to format IgnoreAdd Message
 function libchat:registerIgnoreAdd(func, ...)
-	registerFunction(func, "registerIgnoreAdd", ...)
+	registerFunction(func, "registerIgnoreAdd", nil, nil, ...)
 end
 
 -- Register a function to be called to format IgnoreRemove Message
 function libchat:registerIgnoreRemove(func, ...)
-	registerFunction(func, "registerIgnoreRemove", ...)
+	registerFunction(func, "registerIgnoreRemove", nil, nil, ...)
 end
 
 -- Register a function to be called to format GroupTypeChanged Message
 function libchat:registerGroupMemberLeft(func, ...)
-	registerFunction(func, "registerGroupMemberLeft", ...)
+	registerFunction(func, "registerGroupMemberLeft", nil, nil, ...)
 end
 
 -- Register a function to be called to format GroupTypeChanged Message
 function libchat:registerGroupTypeChanged(func, ...)
-	registerFunction(func, "registerGroupTypeChanged", ...)
+	registerFunction(func, "registerGroupTypeChanged", nil, nil, ...)
 end
 
 -- register a function to be called to format MessageChannel Message
 function libchat:registerAppendDDSBeforeAll(func, ...)
-	registerFunction(func, "registerAppendDDSBeforeAll", ...)
+	registerFunction(func, "registerAppend", "BeforeAll", "DDS", ...)
 end
 
 -- register a function to be called to format MessageChannel Message
 function libchat:registerAppendTextBeforeAll(func, ...)
-	registerFunction(func, "registerAppendTextBeforeAll", ...)
+	registerFunction(func, "registerAppend", "BeforeAll", "Text", ...)
 end
 
 -- register a function to be called to format MessageChannel Message
 function libchat:registerAppendDDSBeforeSender(func, ...)
-	registerFunction(func, "registerAppendDDSBeforeSender", ...)
+	registerFunction(func, "registerAppend", "BeforeSender", "DDS", ...)
 end
 
 -- register a function to be called to format MessageChannel Message
 function libchat:registerAppendTextBeforeSender(func, ...)
-	registerFunction(func, "registerAppendTextBeforeSender", ...)
+	registerFunction(func, "registerAppend", "BeforeSender", "Text", ...)
 end
 
 -- register a function to be called to format MessageChannel Message
 function libchat:registerAppendDDSAfterSender(func, ...)
-	registerFunction(func, "registerAppendDDSAfterSender", ...)
+	registerFunction(func, "registerAppend", "AfterSender", "DDS", ...)
 end
 
 -- register a function to be called to format MessageChannel Message
 function libchat:registerAppendTextAfterSender(func, ...)
-	registerFunction(func, "registerAppendTextAfterSender", ...)
+	registerFunction(func, "registerAppend", "AfterSender", "Text", ...)
 end
 
 -- register a function to be called to format MessageChannel Message
 function libchat:registerAppendDDSBeforeText(func, ...)
-	registerFunction(func, "registerAppendDDSBeforeText", ...)
+	registerFunction(func, "registerAppend", "BeforeText", "DDS", ...)
 end
 
 -- register a function to be called to format MessageChannel Message
 function libchat:registerAppendTextBeforeText(func, ...)
-	registerFunction(func, "registerAppendTextBeforeText", ...)
+	registerFunction(func, "registerAppend", "BeforeText", "Text", ...)
 end
 
 -- register a function to be called to format MessageChannel Message
 function libchat:registerAppendTextAfterText(func, ...)
-	registerFunction(func, "registerAppendTextAfterText", ...)
+	registerFunction(func, "registerAppend", "AfterText", "Text", ...)
 end
 
 -- register a function to be called to format MessageChannel Message
 function libchat:registerAppendDDSAfterText(func, ...)
-	registerFunction(func, "registerAppendDDSAfterText", ...)
+	registerFunction(func, "registerAppend", "AfterText", "DDS", ...)
 end
 
 local function libchatdebug()
