@@ -499,54 +499,21 @@ function libchat:registerFormat(func, ...)
 	registerFunction(func, "registerFormat", nil, nil, ...)
 end
 
--- register a function to be called to format MessageChannel Message
-function libchat:registerAppendDDSBeforeAll(func, ...)
-	registerFunction(func, "registerAppend", "BeforeAll", "DDS", ...)
+-- register functions to be called to format MessageChannel Message
+local function createMyFunction(funcPrefix, position, index)
+    local functionName = functionNameTemplate:format(funcPrefix, index, position)
+    libchat[functionName] = function(self, func, ...)
+        registerFunction(func, funcPrefix, position, index, ...)
+    end
 end
 
--- register a function to be called to format MessageChannel Message
-function libchat:registerAppendTextBeforeAll(func, ...)
-	registerFunction(func, "registerAppend", "BeforeAll", "Text", ...)
-end
-
--- register a function to be called to format MessageChannel Message
-function libchat:registerAppendDDSBeforeSender(func, ...)
-	registerFunction(func, "registerAppend", "BeforeSender", "DDS", ...)
-end
-
--- register a function to be called to format MessageChannel Message
-function libchat:registerAppendTextBeforeSender(func, ...)
-	registerFunction(func, "registerAppend", "BeforeSender", "Text", ...)
-end
-
--- register a function to be called to format MessageChannel Message
-function libchat:registerAppendDDSAfterSender(func, ...)
-	registerFunction(func, "registerAppend", "AfterSender", "DDS", ...)
-end
-
--- register a function to be called to format MessageChannel Message
-function libchat:registerAppendTextAfterSender(func, ...)
-	registerFunction(func, "registerAppend", "AfterSender", "Text", ...)
-end
-
--- register a function to be called to format MessageChannel Message
-function libchat:registerAppendDDSBeforeText(func, ...)
-	registerFunction(func, "registerAppend", "BeforeText", "DDS", ...)
-end
-
--- register a function to be called to format MessageChannel Message
-function libchat:registerAppendTextBeforeText(func, ...)
-	registerFunction(func, "registerAppend", "BeforeText", "Text", ...)
-end
-
--- register a function to be called to format MessageChannel Message
-function libchat:registerAppendTextAfterText(func, ...)
-	registerFunction(func, "registerAppend", "AfterText", "Text", ...)
-end
-
--- register a function to be called to format MessageChannel Message
-function libchat:registerAppendDDSAfterText(func, ...)
-	registerFunction(func, "registerAppend", "AfterText", "DDS", ...)
+-- libchat:registerAppendDDSBeforeAll, libchat:registerAppendTextBeforeAll, libchat:registerAppendDDSBeforeSender, libchat:registerAppendTextBeforeSender,
+-- libchat:registerAppendDDSAfterSender, libchat:registerAppendTextAfterSender, libchat:registerAppendDDSBeforeText, libchat:registerAppendTextBeforeText,
+-- libchat:registerAppendDDSAfterText, libchat:registerAppendTextAfterText
+for _, position in ipairs(PositionList) do
+    for _, index in ipairs(IndexList) do
+        createMyFunction("registerAppend", position, index)
+    end
 end
 
 -- Register a function to be called to format FriendStatus Message
