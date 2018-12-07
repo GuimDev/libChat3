@@ -425,16 +425,6 @@ local function registerFunction(addonFunc, funcToUse, position, index, ...)
 		funcText = addonFunc
 	elseif funcToUse == "registerFormat" then
 		funcFormat = addonFunc
-	elseif funcToUse == "registerFriendStatus" then
-		funcFriendStatus = addonFunc
-	elseif funcToUse == "registerIgnoreAdd" then
-		funcIgnoreAdd = addonFunc
-	elseif funcToUse == "registerIgnoreRemove" then
-		funcIgnoreRemove = addonFunc
-	elseif funcToUse == "registerGroupMemberLeft" then
-		funcGroupMemberLeft = addonFunc
-	elseif funcToUse == "registerGroupTypeChanged" then
-		funcGroupTypeChanged = addonFunc
 	elseif funcToUse == "registerAppend" then
 		if position == "BeforeAll" and index == "DDS" then
 			funcDDSBeforeAll = addonFunc
@@ -458,6 +448,17 @@ local function registerFunction(addonFunc, funcToUse, position, index, ...)
 			funcDDSAfterText = addonFunc
 		end
 		funcToUse = "registerAppend" .. index .. position
+	-- old
+	elseif funcToUse == "registerFriendStatus" then
+		funcFriendStatus = addonFunc
+	elseif funcToUse == "registerIgnoreAdd" then
+		funcIgnoreAdd = addonFunc
+	elseif funcToUse == "registerIgnoreRemove" then
+		funcIgnoreRemove = addonFunc
+	elseif funcToUse == "registerGroupMemberLeft" then
+		funcGroupMemberLeft = addonFunc
+	elseif funcToUse == "registerGroupTypeChanged" then
+		funcGroupTypeChanged = addonFunc
 	end
 	
 	if not libchat.manager[funcToUse] then
@@ -477,7 +478,6 @@ local function registerFunction(addonFunc, funcToUse, position, index, ...)
 	else
 		table.insert(libchat.manager[funcToUse],"Anonymous AddOn")
 	end
-	
 end
 
 -- Register a function to be called to modify MessageChannel Sender Name
@@ -493,31 +493,6 @@ end
 -- Register a function to be called to format MessageChannel whole Message
 function libchat:registerFormat(func, ...)
 	registerFunction(func, "registerFormat", nil, nil, ...)
-end
-
--- Register a function to be called to format FriendStatus Message
-function libchat:registerFriendStatus(func, ...)
-	registerFunction(func, "registerFriendStatus", nil, nil, ...)
-end
-
--- Register a function to be called to format IgnoreAdd Message
-function libchat:registerIgnoreAdd(func, ...)
-	registerFunction(func, "registerIgnoreAdd", nil, nil, ...)
-end
-
--- Register a function to be called to format IgnoreRemove Message
-function libchat:registerIgnoreRemove(func, ...)
-	registerFunction(func, "registerIgnoreRemove", nil, nil, ...)
-end
-
--- Register a function to be called to format GroupTypeChanged Message
-function libchat:registerGroupMemberLeft(func, ...)
-	registerFunction(func, "registerGroupMemberLeft", nil, nil, ...)
-end
-
--- Register a function to be called to format GroupTypeChanged Message
-function libchat:registerGroupTypeChanged(func, ...)
-	registerFunction(func, "registerGroupTypeChanged", nil, nil, ...)
 end
 
 -- register a function to be called to format MessageChannel Message
@@ -568,6 +543,31 @@ end
 -- register a function to be called to format MessageChannel Message
 function libchat:registerAppendDDSAfterText(func, ...)
 	registerFunction(func, "registerAppend", "AfterText", "DDS", ...)
+end
+
+-- Register a function to be called to format FriendStatus Message
+function libchat:registerFriendStatus(func, ...)
+	registerFunction(func, "registerFriendStatus", nil, nil, ...)
+end
+
+-- Register a function to be called to format IgnoreAdd Message
+function libchat:registerIgnoreAdd(func, ...)
+	registerFunction(func, "registerIgnoreAdd", nil, nil, ...)
+end
+
+-- Register a function to be called to format IgnoreRemove Message
+function libchat:registerIgnoreRemove(func, ...)
+	registerFunction(func, "registerIgnoreRemove", nil, nil, ...)
+end
+
+-- Register a function to be called to format GroupTypeChanged Message
+function libchat:registerGroupMemberLeft(func, ...)
+	registerFunction(func, "registerGroupMemberLeft", nil, nil, ...)
+end
+
+-- Register a function to be called to format GroupTypeChanged Message
+function libchat:registerGroupTypeChanged(func, ...)
+	registerFunction(func, "registerGroupTypeChanged", nil, nil, ...)
 end
 
 local function libchatdebug()
