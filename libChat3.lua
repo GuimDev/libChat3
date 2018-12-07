@@ -115,26 +115,24 @@ local PositionList = { "BeforeAll", "BeforeSender", "AfterSender", "BeforeText",
 local IndexList = { "DDS", "Text" }
 local functionNameTemplate = "%s%s%s"
 
-local funcName
-local funcText
-local funcFormat
+local storage = {
+	BeforeAll = { DDS = {}, Text = {} },
+	BeforeSender = { DDS = {},	Text = {} },
+	AfterSender = {	DDS = {}, Text = {} },
+	BeforeText = { DDS = {}, Text = {} },
+	AfterText = { DDS = {}, Text = {} },
+	parser = {
+		Name = {},
+		Text = {},
+		Format = nil -- only one
+	}
+}
 
 local funcFriendStatus
 local funcIgnoreAdd
 local funcIgnoreRemove
 local funcGroupMemberLeft
 local funcGroupTypeChanged
-
-local funcDDSBeforeAll
-local funcTextBeforeAll
-local funcDDSBeforeSender
-local funcTextBeforeSender
-local funcDDSAfterSender
-local funcTextAfterSender
-local funcDDSBeforeText
-local funcTextBeforeText
-local funcTextAfterText
-local funcDDSAfterText
 
 -- Initialize Manager to trace Addons
 if not libchat.manager then
@@ -178,53 +176,53 @@ function libchat:MessageChannelReceiver(channelID, from, text, isCustomerService
 	end
 	
 	-- Function to append
-	if funcDDSBeforeAll then
-		DDSBeforeAll = funcDDSBeforeAll(channelID, from, text, isCustomerService, fromDisplayName)
+	if storage.BeforeAll.DDS then
+		DDSBeforeAll = storage.BeforeAll.DDS(channelID, from, text, isCustomerService, fromDisplayName)
 	end
 	
 	-- Function to append
-	if funcTextBeforeAll then
-		TextBeforeAll = funcTextBeforeAll(channelID, from, text, isCustomerService, fromDisplayName)
+	if storage.BeforeAll.Text then
+		TextBeforeAll = storage.BeforeAll.Text(channelID, from, text, isCustomerService, fromDisplayName)
 	end
 	
 	-- Function to append
-	if funcDDSBeforeSender then
-		DDSBeforeSender = funcDDSBeforeSender(channelID, from, text, isCustomerService, fromDisplayName)
+	if storage.BeforeSender.DDS then
+		DDSBeforeSender = storage.BeforeSender.DDS(channelID, from, text, isCustomerService, fromDisplayName)
 	end
 	
 	-- Function to append
-	if funcTextBeforeSender then
-		TextBeforeSender = funcTextBeforeSender(channelID, from, text, isCustomerService, fromDisplayName)
+	if storage.BeforeSender.Text then
+		TextBeforeSender = storage.BeforeSender.Text(channelID, from, text, isCustomerService, fromDisplayName)
 	end
 	
 	-- Function to append
-	if funcDDSAfterSender then
-		DDSAfterSender = funcDDSAfterSender(channelID, from, text, isCustomerService, fromDisplayName)
+	if storage.AfterSender.DDS then
+		DDSAfterSender = storage.AfterSender.DDS(channelID, from, text, isCustomerService, fromDisplayName)
 	end
 	
 	-- Function to append
-	if funcTextAfterSender then
-		TextAfterSender = funcTextAfterSender(channelID, from, text, isCustomerService, fromDisplayName)
+	if storage.AfterSender.Text then
+		TextAfterSender = storage.AfterSender.Text(channelID, from, text, isCustomerService, fromDisplayName)
 	end
 	
 	-- Function to append
-	if funcDDSBeforeText then
-		DDSBeforeText = funcDDSBeforeText(channelID, from, text, isCustomerService, fromDisplayName)
+	if storage.BeforeText.DDS then
+		DDSBeforeText = storage.BeforeText.DDS(channelID, from, text, isCustomerService, fromDisplayName)
 	end
 	
 	-- Function to append
-	if funcTextBeforeText then
-		TextBeforeText = funcTextBeforeText(channelID, from, text, isCustomerService, fromDisplayName)
+	if storage.BeforeText.Text then
+		TextBeforeText = storage.BeforeText.Text(channelID, from, text, isCustomerService, fromDisplayName)
 	end
 	
 	-- Function to append
-	if funcTextAfterText then
-		TextAfterText = funcTextAfterText(channelID, from, text, isCustomerService, fromDisplayName)
+	if storage.AfterText.Text then
+		TextAfterText = storage.AfterText.Text(channelID, from, text, isCustomerService, fromDisplayName)
 	end
 	
 	-- Function to append
-	if funcDDSAfterText then
-		DDSAfterText = funcDDSAfterText(channelID, from, text, isCustomerService, fromDisplayName)
+	if storage.AfterText.DDS then
+		DDSAfterText = storage.AfterText.DDS(channelID, from, text, isCustomerService, fromDisplayName)
 	end
 
 	-- Function to affect From
@@ -431,25 +429,25 @@ local function registerFunction(callback, funcToUse, position, index, ...)
 		funcFormat = callback
 	elseif funcToUse == "registerAppend" then
 		if position == "BeforeAll" and index == "DDS" then
-			funcDDSBeforeAll = callback
+			storage.BeforeAll.DDS = callback
 		elseif position == "BeforeAll" and index == "Text" then
-			funcTextBeforeAll = callback
+			storage.BeforeAll.Text = callback
 		elseif position == "BeforeSender" and index == "DDS" then
-			funcDDSBeforeSender = callback
+			storage.BeforeSender.DDS = callback
 		elseif position == "BeforeSender" and index == "Text" then
-			funcTextBeforeSender = callback
+			storage.BeforeSender.Text = callback
 		elseif position == "AfterSender" and index == "DDS" then
-			funcDDSAfterSender = callback
+			storage.AfterSender.DDS = callback
 		elseif position == "AfterSender" and index == "Text" then
-			funcTextAfterSender = callback
+			storage.AfterSender.Text = callback
 		elseif position == "BeforeText" and index == "DDS" then
-			funcDDSBeforeText = callback
+			storage.BeforeText.DDS = callback
 		elseif position == "BeforeText" and index == "Text" then
-			funcTextBeforeText = callback
+			storage.BeforeText.Text = callback
 		elseif position == "AfterText" and index == "Text" then
-			funcTextAfterText = callback
+			storage.AfterText.Text = callback
 		elseif position == "AfterText" and index == "DDS" then
-			funcDDSAfterText = callback
+			storage.AfterText.DDS = callback
 		end
 		funcToUse = "registerAppend" .. index .. position
 	-- old
