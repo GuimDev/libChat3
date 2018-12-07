@@ -103,7 +103,7 @@ More info : http://www.esoui.com/downloads/__________.html
 
 ]]--
 
-local LIB_NAME, LIB_VERSION = "libChat-1.0", 9
+local LIB_NAME, LIB_VERSION = "libChat-1.0", 10
 
 local libchat, oldminor = LibStub:NewLibrary(LIB_NAME, LIB_VERSION)
 if not libchat then
