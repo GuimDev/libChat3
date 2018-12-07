@@ -171,55 +171,12 @@ function libchat:MessageChannelReceiver(channelID, from, text, isCustomerService
 	if not info or not info.format then
 		return
 	end
-	
-	-- Function to append
-	if storage.BeforeAll.DDS then
-		output.BeforeAll.DDS = storage.BeforeAll.DDS(channelID, from, text, isCustomerService, fromDisplayName)
-	end
-	
-	-- Function to append
-	if storage.BeforeAll.Text then
-		output.BeforeAll.Text = storage.BeforeAll.Text(channelID, from, text, isCustomerService, fromDisplayName)
-	end
-	
-	-- Function to append
-	if storage.BeforeSender.DDS then
-		output.BeforeSender.DDS = storage.BeforeSender.DDS(channelID, from, text, isCustomerService, fromDisplayName)
-	end
-	
-	-- Function to append
-	if storage.BeforeSender.Text then
-		output.BeforeSender.Text = storage.BeforeSender.Text(channelID, from, text, isCustomerService, fromDisplayName)
-	end
-	
-	-- Function to append
-	if storage.AfterSender.DDS then
-		output.AfterSender.DDS = storage.AfterSender.DDS(channelID, from, text, isCustomerService, fromDisplayName)
-	end
-	
-	-- Function to append
-	if storage.AfterSender.Text then
-		output.AfterSender.Text = storage.AfterSender.Text(channelID, from, text, isCustomerService, fromDisplayName)
-	end
-	
-	-- Function to append
-	if storage.BeforeText.DDS then
-		output.BeforeText.DDS = storage.BeforeText.DDS(channelID, from, text, isCustomerService, fromDisplayName)
-	end
-	
-	-- Function to append
-	if storage.BeforeText.Text then
-		output.BeforeText.Text = storage.BeforeText.Text(channelID, from, text, isCustomerService, fromDisplayName)
-	end
-	
-	-- Function to append
-	if storage.AfterText.Text then
-		output.AfterText.Text = storage.AfterText.Text(channelID, from, text, isCustomerService, fromDisplayName)
-	end
-	
-	-- Function to append
-	if storage.AfterText.DDS then
-		output.AfterText.DDS = storage.AfterText.DDS(channelID, from, text, isCustomerService, fromDisplayName)
+
+	for _, position in ipairs(PositionList) do
+		for _, func in ipairs(IndexList) do
+			-- Function to append
+			output[position][index] = func(channelID, from, text, isCustomerService, fromDisplayName)
+		end
 	end
 
 	-- Function to affect From
